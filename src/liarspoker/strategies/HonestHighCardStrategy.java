@@ -31,4 +31,9 @@ public final class HonestHighCardStrategy implements Strategy {
         ? myBid
         : Bids.callBluff();
   }
+
+  @Override
+  public String getDescription() {
+    return "bid my highest card";
+  }
 }

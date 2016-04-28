@@ -21,7 +21,7 @@ public class Main {
 
     GameResult gameResult = calculator.calculateGameResult(
         new RandomRevealedPosition(new ShuffledDeck(), cardsPerPlayer), strategies);
-    new GameCommentator().printCommentaryForGameResult(gameResult);
+    new GameCommentator().printCommentaryForGameResult(gameResult, strategies);
 
     // Play a bunch of games and see who loses more.
     int numGames = 10000;
