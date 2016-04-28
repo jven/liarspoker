@@ -6,23 +6,27 @@ import liarspoker.common.Bid;
 import liarspoker.common.Card;
 import liarspoker.common.RevealedPosition;
 
-final class PairBid extends Bid {
+final class NOfAKindBid extends Bid {
 
-  private final Card.Value pairValue;
+  private final int n;
+  private final String nLabel;
+  private final Card.Value value;
 
-  public PairBid(Card.Value pairValue) {
-    super(Bid.Type.PAIR);
+  public NOfAKindBid(Bid.Type type, int n, String nLabel, Card.Value value) {
+    super(type);
 
-    if (pairValue.isWild()) {
-      throw new IllegalArgumentException("Can't bid a wild pair.");
+    if (value.isWild()) {
+      throw new IllegalArgumentException("Can't bid a wild n of a kind.");
     }
-    this.pairValue = pairValue;
+    this.n = n;
+    this.nLabel = nLabel;
+    this.value = value;
   }
 
   @Override
   public boolean canPlayAfterOtherBidOfSameType(Bid other) {
-    PairBid pairBid = (PairBid) other;
-    return pairValue.isMoreValuableThan(pairBid.pairValue);
+    NOfAKindBid nOfAKindBid = (NOfAKindBid) other;
+    return value.isMoreValuableThan(nOfAKindBid.value);
   }
 
   @Override
@@ -33,9 +37,9 @@ final class PairBid extends Bid {
       List<Card> hand = revealedPosition.getHandForPlayer(i);
       for (int j = 0; j < hand.size(); j++) {
         Card c = hand.get(j);
-        if (c.isWild() || c.getValue() == pairValue) {
+        if (c.isWild() || c.getValue() == value) {
           numFound++;
-          if (numFound >= 2) {
+          if (numFound >= n) {
             return true;
           }
         }
@@ -47,6 +51,8 @@ final class PairBid extends Bid {
 
   @Override
   public String getBidMessageForPlayer(int player) {
-    return "Player " + player + " bids two " + pairValue + "s.";
+    return nLabel == "one"
+        ? "Player " + player + " bids one " + value + "."
+        : "Player " + player + " bids " + nLabel + " " + value + "s.";
   }
 }
