@@ -2,6 +2,8 @@ package liarspoker.common;
 
 public abstract class Bid {
 
+  // TODO(jven): The subclasses might have to be exposed in order to get at the "data" for each
+  // type, e.g. the card value for high card.
   public enum Type {
     HIGH_CARD(0),
     PAIR(1),
